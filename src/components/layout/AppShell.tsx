@@ -25,7 +25,7 @@ export function AppShell() {
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
              <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold">D</div>
              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-               DramaStream
+               DramaCids
              </span>
           </div>
 

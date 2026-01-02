@@ -30,7 +30,9 @@
 
 @layer base {
   body {
-    @apply bg-background text-white antialiased font-sans;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    @apply antialiased font-sans;
   }
 }
 
