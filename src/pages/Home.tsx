@@ -10,6 +10,8 @@ import { Loader2 } from 'lucide-react';
 import { useContinueWatching } from '../hooks/useContinueWatching';
 
 export default function Home() {
+  const { history } = useContinueWatching(); // Moved to top
+
   const [
     dramaboxQuery,
     netshortQuery,
@@ -20,22 +22,30 @@ export default function Home() {
       { 
         queryKey: ['dramabox', 'latest'], 
         queryFn: dramaboxService.getLatest,
-        staleTime: 1000 * 60 * 5 // 5 minutes
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        retry: 1,
+        retryDelay: 3000
       },
       { 
         queryKey: ['netshort', 'foryou'], 
         queryFn: netshortService.getForYou,
-         staleTime: 1000 * 60 * 5 
+         staleTime: 1000 * 60 * 5,
+         retry: 1,
+         retryDelay: 3000
       },
       { 
         queryKey: ['melolo', 'trending'], 
         queryFn: meloloService.getTrending,
-         staleTime: 1000 * 60 * 5 
+         staleTime: 1000 * 60 * 5,
+         retry: 1,
+         retryDelay: 3000
       },
       { 
         queryKey: ['anime', 'latest'], 
         queryFn: animeService.getLatest,
-         staleTime: 1000 * 60 * 5 
+         staleTime: 1000 * 60 * 5,
+         retry: 1,
+         retryDelay: 3000
       }
     ]
   });
@@ -63,8 +73,6 @@ export default function Home() {
       ...(meloloQuery.data?.slice(0, 1) || []),
       ...(animeQuery.data?.slice(0, 1) || []),
   ].slice(0, 5);
-
-  const { history } = useContinueWatching();
 
   return (
     <div className="space-y-8 animate-fade-in pb-20">

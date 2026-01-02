@@ -5,6 +5,7 @@ import type { BaseMediaItem, MediaDetail, DramaboxItem } from '../types';
 export const dramaboxService = {
   getVip: async (): Promise<BaseMediaItem[]> => {
     const { data } = await apiClient.get<DramaboxItem[]>('/dramabox/vip');
+    console.log('Dramabox VIP Raw:', data);
     return data.map(normalizeDramabox);
   },
   getDubIndo: async (): Promise<BaseMediaItem[]> => {
