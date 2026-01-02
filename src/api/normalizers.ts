@@ -1,7 +1,7 @@
 import type { AnimeItem, BaseMediaItem, DramaboxItem, MeloloItem, NetshortItem } from './types';
 
-export const normalizeDramabox = (item: DramaboxItem): BaseMediaItem => ({
-  id: String(item.id),
+export const normalizeDramabox = (item: any): BaseMediaItem => ({
+  id: String(item.bookId || item.drama_id || item.id),
   title: item.title,
   cover: item.cover,
   provider: 'dramabox',
