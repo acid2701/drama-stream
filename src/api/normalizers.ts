@@ -2,11 +2,11 @@ import type { AnimeItem, BaseMediaItem, DramaboxItem, MeloloItem, NetshortItem }
 
 export const normalizeDramabox = (item: any): BaseMediaItem => ({
   id: String(item.bookId || item.drama_id || item.id),
-  title: item.title,
-  cover: item.cover,
+  title: item.title || item.bookName || item.name || 'Untitled',
+  cover: item.cover || item.coverUrl || item.image || item.imageUrl || '',
   provider: 'dramabox',
-  episodeCount: item.total_episode,
-  score: item.score,
+  episodeCount: item.total_episode || item.chapterCount,
+  score: item.score || item.hotCode,
 });
 
 export const normalizeNetshort = (item: NetshortItem): BaseMediaItem => ({

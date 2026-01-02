@@ -41,7 +41,7 @@ export const dramaboxService = {
   getDetail: async (id: string): Promise<MediaDetail> => {
     // Note: API might expect 'id' or 'drama_id' in query or path?
     // Assumption: /dramabox/detail?id=...
-    const { data } = await apiClient.get<any>(`/dramabox/detail?id=${id}`);
+    const { data } = await apiClient.get<any>(`/dramabox/detail?bookId=${id}`);
     
     // Transform detailed response
     return {
