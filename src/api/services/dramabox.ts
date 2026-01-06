@@ -65,7 +65,7 @@ export const dramaboxService = {
   },
   getAllEpisodes: async (id: string): Promise<any[]> => {
       // Falback only if needed, but getDetail should handle it now
-      const { data } = await apiClient.get<any[]>('/dramabox/allepisode', {
+      const { data } = await dramaboxClient.get<any[]>('/dramabox/allepisode', {
           params: { id: id }
       });
       return data;
