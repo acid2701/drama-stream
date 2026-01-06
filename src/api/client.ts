@@ -1,9 +1,18 @@
 import axios from 'axios';
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.sansekai.my.id/api';
+export const DRAMABOX_API_BASE_URL = 'https://dramabox.sansekai.my.id/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 15000,
+});
+
+export const dramaboxClient = axios.create({
+  baseURL: DRAMABOX_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

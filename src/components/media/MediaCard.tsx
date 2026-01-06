@@ -26,10 +26,17 @@ export function MediaCard({ item, className, featured = false }: MediaCardProps)
         onClick={handleClick}
     >
       <img
-        src={item.cover}
+        src={`https://images.weserv.nl/?url=${encodeURIComponent(item.cover)}&w=400&h=600&fit=cover&output=webp`}
         alt={item.title}
         loading="lazy"
         className="h-full w-full object-cover transition-transform duration-300 group-hover:opacity-80"
+        onError={(e) => {
+            // Fallback to placeholder if proxy also fails
+            const target = e.target as HTMLImageElement;
+            if (!target.src.includes('placehold.co')) {
+                target.src = 'https://placehold.co/400x600?text=No+Image';
+            }
+        }}
       />
       
       {/* Gradient Overlay */}

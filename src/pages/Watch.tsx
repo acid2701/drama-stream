@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Loader2 } from 'lucide-react';
@@ -15,6 +15,7 @@ export default function Watch() {
   const { provider, id, episodeId } = useParams<{ provider: string, id: string, episodeId: string }>();
   const navigate = useNavigate();
   const { saveHistory } = useContinueWatching();
+  const [useIframe, setUseIframe] = useState(false);
 
   // Fetch Stream URL
   const { data: streamUrl, isLoading, isError, error } = useQuery({
@@ -34,8 +35,8 @@ export default function Watch() {
              return animeData.url || animeData.videoUrl;
 
         case 'dramabox':
-             const dramaEps = await dramaboxService.getAllEpisodes(id);
-             const foundDramaEp = dramaEps.find((e: any) => String(e.id) === String(episodeId) || String(e.episode) === String(episodeId));
+             const dramaDetail = await dramaboxService.getDetail(id);
+             const foundDramaEp = dramaDetail.episodes?.find((e: any) => String(e.id) === String(episodeId) || String(e.episode) === String(episodeId));
              if (!foundDramaEp) throw new Error("Episode not found");
              return foundDramaEp.url;
 
@@ -135,12 +136,26 @@ export default function Watch() {
         </Button>
       </div>
 
-      <div className="w-full max-w-6xl aspect-video relative shadow-2xl">
-          <VideoPlayer 
-            src={streamUrl} 
-            autoPlay={true}
-            className="w-full h-full rounded-lg"
-          />
+      <div className="w-full max-w-6xl aspect-video relative shadow-2xl bg-black rounded-lg overflow-hidden">
+          {!useIframe ? (
+            <VideoPlayer 
+                src={streamUrl} 
+                autoPlay={true}
+                className="w-full h-full"
+                onError={() => {
+                    console.log("VideoPlayer failed, falling back to Iframe");
+                    setUseIframe(true);
+                }}
+            />
+          ) : (
+            <iframe 
+                src={streamUrl}
+                className="w-full h-full border-0"
+                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            />
+          )}
+
       </div>
       
       <div className="mt-8 text-center text-gray-400 text-sm">

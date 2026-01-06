@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { BaseMediaItem } from '../api/types';
 
 const KEY = 'drama-stream-history';
@@ -23,8 +23,13 @@ export function useContinueWatching() {
     }
   }, []);
 
-  const saveHistory = (item: BaseMediaItem, episode: string, episodeId: string) => {
+  const saveHistory = useCallback((item: BaseMediaItem, episode: string, episodeId: string) => {
     setHistory((prev) => {
+      // Avoid state update if top item is already the same (prevents double effect)
+      if (prev.length > 0 && prev[0].id === item.id && prev[0].provider === item.provider && prev[0].lastEpisodeId === episodeId) {
+          return prev;
+      }
+
       // Remove existing entry for same ID
       const filtered = prev.filter((i) => !(i.id === item.id && i.provider === item.provider));
       // Add new to top
@@ -38,15 +43,15 @@ export function useContinueWatching() {
       localStorage.setItem(KEY, JSON.stringify(newHistory));
       return newHistory;
     });
-  };
+  }, []);
 
-  const removeFromHistory = (id: string, provider: string) => {
+  const removeFromHistory = useCallback((id: string, provider: string) => {
       setHistory((prev) => {
           const newHistory = prev.filter((i) => !(i.id === id && i.provider === provider));
           localStorage.setItem(KEY, JSON.stringify(newHistory));
           return newHistory;
       });
-  };
+  }, []);
 
   return { history, saveHistory, removeFromHistory };
 }

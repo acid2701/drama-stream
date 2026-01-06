@@ -17,6 +17,7 @@ export default function Detail() {
     queryKey: ['detail', provider, id],
     queryFn: async () => {
       if (!id) throw new Error("ID required");
+      console.log('Fetching details for:', { provider, id });
       switch (provider) {
         case 'dramabox':
              // Need detailed info
